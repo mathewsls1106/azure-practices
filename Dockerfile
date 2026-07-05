@@ -1,0 +1,35 @@
+
+# === Etapa de base ===
+FROM python:3.12-slim AS base
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# === Etapa de constructor ===
+FROM base AS builder
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY pyproject.toml .
+
+# Crea el entorno virtual e instalamos dependencias
+RUN uv venv && uv sync
+
+# === Etapa de desarrollo ===
+FROM base AS development
+COPY --from=builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
+RUN mkdir -p /app/data
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
+
+FROM base AS production
+COPY --from=builder /app/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
+COPY . .
+RUN mkdir -p /app/data
+EXPOSE 8000
+
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]

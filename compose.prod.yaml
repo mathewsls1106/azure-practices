@@ -1,0 +1,16 @@
+services:
+  web:
+    build:
+      context: .
+      target: production
+    ports:
+      - "80:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=tu-llave-secreta-de-produccion-super-segura
+    volumes:
+      - django_prod_data:/app/data
+    restart: always      # Si el servidor se cae o reinicia, el contenedor revive solo
+
+volumes:
+  django_prod_data:

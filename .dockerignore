@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Git
+.git
+.gitignore
+
+# Local data
+data/
+db.sqlite3
+
+# Compose / docs
+compose*.yaml
+Dockerfile
+README.md

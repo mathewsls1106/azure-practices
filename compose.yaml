@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      target: development
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=dev-secret-key-123
+    volumes:
+      - .:/app
+      - venv_data:/app/.venv
+      - django_dev_data:/app/data
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - .venv/
+            - data/
+
+volumes:
+  django_dev_data:
+  venv_data:
