@@ -25,6 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-9#--=0nvlo7k@#p)ci)7vfb)@6j8wbx@d^ks9zct(au9=3dcgb"
 
 env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
@@ -45,12 +48,13 @@ DJANGO_APPS = [
 
 LOCAL_APPS = ["apps.auth.infrastructure"]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = ["storages", "corsheaders"]
 
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -61,6 +65,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "config.urls"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
@@ -137,3 +147,16 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
+
+# configuracion de azure blob storage
+DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
+
+AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME")
+
+AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY")
+
+AZURE_CONTAINER = env("AZURE_CONTAINER")
+
+AZURE_URL_ENDPOINT = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
+
+MEDIA_URL = f"{AZURE_URL_ENDPOINT}/{AZURE_CONTAINER}/"

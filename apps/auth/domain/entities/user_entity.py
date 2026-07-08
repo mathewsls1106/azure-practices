@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from apps.auth.domain.value_objects.file_field_vo import FileFieldVO
+from apps.shared.domain.value_objects.file_field_vo import FileFieldVO
 
 
 @dataclass
