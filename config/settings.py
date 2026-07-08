@@ -149,14 +149,20 @@ REST_FRAMEWORK = {
 }
 
 # configuracion de azure blob storage
-DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
-
-AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME")
-
 AZURE_ACCOUNT_KEY = env("AZURE_ACCOUNT_KEY")
-
+AZURE_ACCOUNT_NAME = env("AZURE_ACCOUNT_NAME")
 AZURE_CONTAINER = env("AZURE_CONTAINER")
+STORAGES = {
+    "default": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                "account_name": AZURE_ACCOUNT_NAME,
+                "account_key": AZURE_ACCOUNT_KEY,
+                "azure_container": AZURE_CONTAINER,
+            },
 
-AZURE_URL_ENDPOINT = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
-
-MEDIA_URL = f"{AZURE_URL_ENDPOINT}/{AZURE_CONTAINER}/"
+        },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+    }
+}
