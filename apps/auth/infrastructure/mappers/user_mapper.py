@@ -43,3 +43,13 @@ class UserMapper:
                 user_dict.get("picture") if user_dict.get("picture") else None
             ),
         )
+
+    @staticmethod
+    def entity_to_dict(entity: UserEntity) -> dict:
+        return {
+            "id": entity.id,
+            "email": entity.email,
+            "first_name": entity.first_name,
+            "last_name": entity.last_name,
+            "picture": entity.picture.url,
+        }

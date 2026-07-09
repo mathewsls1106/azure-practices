@@ -19,3 +19,8 @@ class UserRepository(IUserRepository):
         model = UserMapper.entity_to_model(entity)
         model.save()
         return UserMapper.model_to_entity(model)
+
+
+    def get_all(self) -> list[UserEntity]:
+        models = self.model.objects.all()
+        return [UserMapper.model_to_entity(model) for model in models]

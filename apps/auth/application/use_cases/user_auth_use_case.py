@@ -12,6 +12,7 @@ from apps.auth.domain.exceptions.login_exception import (
 )
 from apps.shared.application.validation import ensure_exists
 from apps.shared.domain.policies.domain_policy import DomainPolicy
+from apps.auth.domain.entities.user_entity import UserEntity
 
 
 class UserAuthUseCase:
@@ -53,3 +54,7 @@ class UserAuthUseCase:
         self.user_repository.create(user)
 
         return self.token_service.create_token(user)
+
+
+    def get_all_users(self) -> list[UserEntity]:
+        return self.user_repository.get_all()

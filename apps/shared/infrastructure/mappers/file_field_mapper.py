@@ -14,7 +14,7 @@ class FileFieldMapper:
 
         return FileFieldVO(
             content=file_bytes,
-            name=file_field.name,
+            url=file_field.url,
             size=file_field.size,
         )
 
@@ -23,4 +23,4 @@ class FileFieldMapper:
         if vo is None:
             return None
 
-        return SimpleUploadedFile(vo.name, vo.content)
+        return SimpleUploadedFile(vo.url, vo.content)

@@ -4,5 +4,5 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class FileFieldVO:
     content: bytes
-    name: str
+    url: str
     size: int
